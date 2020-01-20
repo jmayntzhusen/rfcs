@@ -13,7 +13,7 @@ The intended audience for this RFC is:
 * Documentation contributors
 * hQ developers
 
-back office
+back office 
 
 ## Summary
 
