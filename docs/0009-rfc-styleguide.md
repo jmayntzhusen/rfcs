@@ -11,7 +11,9 @@ Please read and respect the [RFC Code of Conduct](https://github.com/umbraco/rfc
 The intended audience for this RFC is: 
 
 * Documentation contributors
-* HQ developers
+* hQ developers
+
+back office
 
 ## Summary
 
