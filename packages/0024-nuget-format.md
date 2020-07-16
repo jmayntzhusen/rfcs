@@ -24,14 +24,14 @@ As there are a lot of features to cover we have some suggested milestones below:
 
 ### Milestone 1: NuGetify the Umbraco zip structure
 
-_This milestone can be completed on Umbraco 8_
+_This milestone can be completed on **Umbraco 8**_
 
 The first step towards accepting NuGet packages in Umbraco would be to allow both the standard Umbraco zip and a NuGet package to work when installed in the backoffice.
 To get that process started we can start by making their structures more similar. If you compare a NuGet file structure with a zip one you will see that NuGet properly nests files in folders as they are expected to be once installed. The Umbraco zip has a flat structure and a manifest file (package.xml) that keeps track of paths:
 
 ![Structure difference](assets/structure-dif.png)
 
-Moving all files in the Umbraco zip into a "Content" folder as it is in NuGet will also help make it a lot clearer for package devs and consumers what the package actually does!
+Moving all files in the Umbraco zip into a "Content" folder as it is in NuGet will also help make it a lot clearer for package devs and consumers what the package does!
 
 We also suggest that we split out the schema and content parts of the package xml into seperate files. So instead of having a huge package.xml file with elements like this one:
 
@@ -59,16 +59,36 @@ We could have a new "UmbracoContent" folder with folders for macroes, doc types,
 
 ### Milestone 2: Accept both .zip and .nupk package installs
 
+_This milestone can be completed on **Umbraco 8**_
 
+When the 2 structures are more similar, we need the package installer to be able to install both types of files. At this point we are still not concerned with supporting all of the NuGet features, but rather we want to be able to install the files from both package types.
+
+### Milestone 3: Warning about dependencies
+
+_This milestone should be done on **[Project UniCore](https://github.com/umbraco/rfcs/blob/master/cms/0001-project-unicore-intro.md)**_
+
+As a lot of the underlying dependencies on this feature is changing between .Net Framework and .Net Core, this milestone should be done on Project UniCore.
+
+Now that installing NuGet packages is possible, the next step is to warn about missing and conflicting dependencies when installing. 
+
+//TODO - how do we accomplish this?
+
+### Milestone 4: Handling dependencies
+
+//TODO - how do we accomplish this?
 
 ## Drawbacks
 
+All current packages will need to be updated to work with the new format.
 
 ## Alternatives
 
+N/A
 
 ## Out of Scope
 
+The backoffice install / uninstall flow will be covered in a seperate RFC.
+The suggested package migrations will be covered in a seperate RFC.
 
 ## Unresolved Issues
 
