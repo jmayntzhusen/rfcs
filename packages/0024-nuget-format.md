@@ -12,33 +12,67 @@ The intended audience for this RFC is: Package developers and consumers.
 
 ## Summary
 
-Give an intoduction summary to your RFC.
+As mentioned in the [parent RFC](0018-package-format.md), we have a goal to update the Umbraco package format. One of the things we want to do to improve it is to get away from our own package format and use NuGet instead. This will bring many benefits, mainly proper dependency tracking & a single package format to maintain.
 
 ## Motivation
 
-Why are we doing this? What is the expected outcome?
-
-Please explain the motivation & advantages to this RFC.
+We want to make it simpler for package developers to create and maintain their packages. We also want to make it safer for package consumers to install packages.
 
 ## Detailed Design
 
-This is the main part of the RFC. How do you see this being implemented in Umbraco?
+As there are a lot of features to cover we have some suggested milestones below:
+
+### Milestone 1: NuGetify the Umbraco zip structure
+
+_This milestone can be completed on Umbraco 8_
+
+The first step towards accepting NuGet packages in Umbraco would be to allow both the standard Umbraco zip and a NuGet package to work when installed in the backoffice.
+To get that process started we can start by making their structures more similar. If you compare a NuGet file structure with a zip one you will see that NuGet properly nests files in folders as they are expected to be once installed. The Umbraco zip has a flat structure and a manifest file (package.xml) that keeps track of paths:
+
+![Structure difference](assets/structure-dif.png)
+
+Moving all files in the Umbraco zip into a "Content" folder as it is in NuGet will also help make it a lot clearer for package devs and consumers what the package actually does!
+
+We also suggest that we split out the schema and content parts of the package xml into seperate files. So instead of having a huge package.xml file with elements like this one:
+
+```xml
+<Macros>
+    <macro>
+      <name>Get Latest Blogposts</name>
+      <alias>latestBlogposts</alias>
+      <macroType>PartialView</macroType>
+      <macroSource>~/Views/MacroPartials/LatestBlogposts.cshtml</macroSource>
+      <useInEditor>True</useInEditor>
+      <dontRender>False</dontRender>
+      <refreshRate>0</refreshRate>
+      <cacheByMember>False</cacheByMember>
+      <cacheByPage>False</cacheByPage>
+      <properties>
+        <property name="How many posts should be shown" alias="numberOfPosts" sortOrder="0" propertyType="Umbraco.Integer" />
+        <property name="Where to get blog posts from" alias="startNodeId" sortOrder="1" propertyType="Umbraco.ContentPicker" />
+      </properties>
+    </macro>
+</Macros>
+```
+
+We could have a new "UmbracoContent" folder with folders for macroes, doc types, documents (content nodes), etc. If they all follow a standard they don't need to be referenced in the package.xml, the package installer can check if they are there, and then install them (Please check unresolved issues further down for what this means).
+
+### Milestone 2: Accept both .zip and .nupk package installs
+
+
 
 ## Drawbacks
 
-Discuss any disadvantages or sideeffects of this RFC.
 
 ## Alternatives
 
-Are there any alternatives in approach that could be taken? 
 
 ## Out of Scope
 
-List any items out of scope for this RFC. Use this to try to steer the discussion to be as specific as possible to the RFC details.
 
 ## Unresolved Issues
 
-The answers that we are hoping to get from the community & Umbraco HQ is:
+If we move all Umbraco Content out of the package.xml as suggested in Milestone 1, then we won't have a list of things to uninstall when the package is uninstalled. We are looking for feedback and ideas on this. 
 
 ## Related RFCs 
 
